@@ -27,7 +27,7 @@ const debug = false;
 const render = (event) => {
   let c = document.getElementById("c");
 
-  let density = 20;
+  let density = 30;
 
   if (c) {
     c.height = window.innerHeight;
@@ -60,46 +60,22 @@ const render = (event) => {
           r_tot += r;
         }
 
-        // let dx = x - event.x;
-        // let dx = x - vessels[0].x;
-        // let dy = x - event.y;
-        // let dy = y - vessels[0].y;
-        // let r = Math.sqrt(dx_tot * dx_tot + dy_tot * dy);
-        let radius = 5;
+        let radius = 10;
         ctx.beginPath();
-        // ctx.arc(
-        //   x + (30 * dx_tot) / r,
-        //   y + (30 * dy_tot) / r,
-        //   radius * Math.log(100 / r + 1) + 2,
-        //   0,
-        //   Math.PI * 2
-        // );
-        // console.log(r_tot);
         ctx.arc(
           x + x_displacement,
           y + y_displacement,
-          radius * Math.log(100 / r_tot + 1) + 2,
+          radius * Math.log(100 / r_tot + 1) + 6,
           0,
           Math.PI * 2
         );
-        //ctx.stroke();
-        // console.log(r_tot)
-        //        ctx.fillStyle = `rgb(${Math.min(Math.floor(100 * 1) / r, 255)}, 0, 0)`;
-        ctx.fillStyle = `rgb(${255 - Math.floor(r_tot / 4)}, 0, 0)`;
+        ctx.fillStyle = `rgb(${255 - Math.floor(r_tot / 10)}, 0, 0)`;
         ctx.fill();
         ctx.closePath();
       }
     }
   }
 };
-
-// Object.keys(window).forEach((key) => {
-//   if (/^on/.test(key)) {
-//     window.addEventListener(key.slice(2), (event) => {
-//       //       console.log(event);
-//     });
-//   }
-// });
 
 setInterval(step, dt);
 setInterval(render, dt);
