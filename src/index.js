@@ -2,7 +2,8 @@ import "./styles.css";
 
 let vessels = [
   { x: 200, y: 300, dx: 0.3, dy: 0.2, ddx: 0, ddy: 0 },
-  { x: 200, y: 300, dx: 0.05, dy: -0.2, ddx: 0, ddy: 0 }
+  { x: 200, y: 300, dx: -0.05, dy: -0.2, ddx: 0, ddy: 0 },
+  { x: 200, y: 300, dx: 0.07, dy: -0.1, ddx: 0, ddy: 0 }
 ];
 
 const dt = 10;
@@ -43,30 +44,44 @@ const render = (event) => {
         let x = i * density;
         let y = j * density;
 
-        let dx_tot = 0;
-        let dy_tot = 0;
+        let x_displacement = 0;
+        let y_displacement = 0;
+        let r_tot = 0;
         for (let v of vessels) {
-          dx_tot += x - v.x;
-          dy_tot += y - v.y;
+          let dx = x - v.x;
+          let dy = y - v.y;
+          let r = Math.sqrt(dx * dx + dy * dy);
+          x_displacement += (30 * dx) / r;
+          y_displacement += (30 * dy) / r;
+          r_tot += r;
         }
+
         // let dx = x - event.x;
         // let dx = x - vessels[0].x;
         // let dy = x - event.y;
         // let dy = y - vessels[0].y;
-        let r = Math.sqrt(dx_tot * dx_tot + dy_tot * dy_tot);
+        // let r = Math.sqrt(dx_tot * dx_tot + dy_tot * dy);
         let radius = 4;
         ctx.beginPath();
+        // ctx.arc(
+        //   x + (30 * dx_tot) / r,
+        //   y + (30 * dy_tot) / r,
+        //   radius * Math.log(100 / r + 1) + 2,
+        //   0,
+        //   Math.PI * 2
+        // );
+        // console.log(r_tot);
         ctx.arc(
-          x + (30 * dx_tot) / r,
-          y + (30 * dy_tot) / r,
-          radius * Math.log(100 / r + 1) + 2,
+          x + x_displacement,
+          y + y_displacement,
+          radius * Math.log(100 / r_tot + 1) + 2,
           0,
           Math.PI * 2
         );
         //ctx.stroke();
-
+        // console.log(r_tot)
         //        ctx.fillStyle = `rgb(${Math.min(Math.floor(100 * 1) / r, 255)}, 0, 0)`;
-        ctx.fillStyle = `rgb(${255 - Math.floor(r)}, 0, 0)`;
+        ctx.fillStyle = `rgb(${255 - Math.floor(r_tot / 4)}, 0, 0)`;
         ctx.fill();
         ctx.closePath();
       }
