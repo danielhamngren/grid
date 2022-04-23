@@ -1,5 +1,23 @@
 import "./styles.css";
 
+let vessels = [{ x: 200, y: 300, dx: 0.3, dy: 0.2, ddx: 0, ddy: 0 }];
+
+const dt = 10;
+
+const step = () => {
+  for (let v of vessels) {
+    v.x += v.dx * dt;
+    v.y += v.dy * dt;
+
+    if (v.x > window.innerWidth || v.x < 0) {
+      v.dx = -v.dx;
+    }
+    if (v.y > window.innerHeight || v.y < 0) {
+      v.dy = -v.dy;
+    }
+  }
+};
+
 const render = (event) => {
   let c = document.getElementById("c");
 
@@ -14,8 +32,10 @@ const render = (event) => {
         let x = i * density;
         let y = j * density;
 
-        let dx = x - event.x;
-        let dy = y - event.y;
+        // let dx = x - event.x;
+        let dx = x - vessels[0].x;
+        // let dy = x - event.y;
+        let dy = y - vessels[0].y;
         let r = Math.sqrt(dx * dx + dy * dy);
         let radius = 4;
         ctx.beginPath();
@@ -45,7 +65,9 @@ const render = (event) => {
 //   }
 // });
 
-// setInterval(render, 100);
+setInterval(step, dt);
+setInterval(render, dt);
 
 render({ x: 0, y: 0 });
-window.addEventListener("mousemove", render);
+//window.addEventListener("mousemove", render);
+//window.addEventListener("mousemove", step);
