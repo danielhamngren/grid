@@ -1,6 +1,9 @@
 import "./styles.css";
 
-let vessels = [{ x: 200, y: 300, dx: 0.3, dy: 0.2, ddx: 0, ddy: 0 }];
+let vessels = [
+  { x: 200, y: 300, dx: 0.3, dy: 0.2, ddx: 0, ddy: 0 },
+  { x: 200, y: 300, dx: 0.05, dy: -0.2, ddx: 0, ddy: 0 }
+];
 
 const dt = 10;
 
@@ -27,21 +30,35 @@ const render = (event) => {
     c.height = window.innerHeight;
     c.width = window.innerWidth;
     let ctx = c.getContext("2d");
+
+    for (let v of vessels) {
+      ctx.beginPath();
+      ctx.arc(v.x, v.y, 10, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.closePath();
+    }
+
     for (let i = 0; i < c.width / density; i++) {
       for (let j = 0; j < c.height / density; j++) {
         let x = i * density;
         let y = j * density;
 
+        let dx_tot = 0;
+        let dy_tot = 0;
+        for (let v of vessels) {
+          dx_tot += x - v.x;
+          dy_tot += y - v.y;
+        }
         // let dx = x - event.x;
-        let dx = x - vessels[0].x;
+        // let dx = x - vessels[0].x;
         // let dy = x - event.y;
-        let dy = y - vessels[0].y;
-        let r = Math.sqrt(dx * dx + dy * dy);
+        // let dy = y - vessels[0].y;
+        let r = Math.sqrt(dx_tot * dx_tot + dy_tot * dy_tot);
         let radius = 4;
         ctx.beginPath();
         ctx.arc(
-          x + (30 * dx) / r,
-          y + (30 * dy) / r,
+          x + (30 * dx_tot) / r,
+          y + (30 * dy_tot) / r,
           radius * Math.log(100 / r + 1) + 2,
           0,
           Math.PI * 2
