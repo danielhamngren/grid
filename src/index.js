@@ -22,6 +22,8 @@ const step = () => {
   }
 };
 
+const debug = false;
+
 const render = (event) => {
   let c = document.getElementById("c");
 
@@ -32,11 +34,13 @@ const render = (event) => {
     c.width = window.innerWidth;
     let ctx = c.getContext("2d");
 
-    for (let v of vessels) {
-      ctx.beginPath();
-      ctx.arc(v.x, v.y, 10, 0, 2 * Math.PI);
-      ctx.fill();
-      ctx.closePath();
+    if (debug) {
+      for (let v of vessels) {
+        ctx.beginPath();
+        ctx.arc(v.x, v.y, 10, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.closePath();
+      }
     }
 
     for (let i = 0; i < c.width / density; i++) {
@@ -61,7 +65,7 @@ const render = (event) => {
         // let dy = x - event.y;
         // let dy = y - vessels[0].y;
         // let r = Math.sqrt(dx_tot * dx_tot + dy_tot * dy);
-        let radius = 4;
+        let radius = 5;
         ctx.beginPath();
         // ctx.arc(
         //   x + (30 * dx_tot) / r,
